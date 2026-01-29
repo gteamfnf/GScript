@@ -1,4 +1,4 @@
-package crowplexus.iris.macro;
+package brainy.gscript.macro;
 
 import Type.ValueType;
 import eval.vm.Gc;
@@ -12,14 +12,14 @@ using haxe.macro.Tools;
 /**
  * Macro used for the `using Class;` keyword
  *
- * you can make classes be able to be used by implementing the `IrisUsingClass` interface!
+ * you can make classes be able to be used by implementing the `GScriptUsingClass` interface!
  *
  * ```haxe
- * // @:irisUsableEntry() // optional
- * // @:irisUsableEntry(forceAny) // optional // forces the class to be called with any type
- * // @:irisUsableEntry(onlyBasic) // optional // only basic types will be allowed
- * // @:irisUsableEntry(onlyBasic, forceAny) // optional // only basic types will be allowed, and the class will be called with any type
- * class VeryNiceTools implements crowplexus.iris.macro.IrisUsingClass {}
+ * // @:gscriptUsableEntry() // optional
+ * // @:gscriptUsableEntry(forceAny) // optional // forces the class to be called with any type
+ * // @:gscriptUsableEntry(onlyBasic) // optional // only basic types will be allowed
+ * // @:gscriptUsableEntry(onlyBasic, forceAny) // optional // only basic types will be allowed, and the class will be called with any type
+ * class VeryNiceTools implements brainy.gscript.macro.GScriptUsingClass {}
  * ```
  * @author NeeEoo
 **/
@@ -30,11 +30,11 @@ class UsingMacro {
 
 		var packName = (cls.pack.length > 0 ? cls.pack.join(".") + "." : "") + cls.name;
 
-		var alreadyProcessed_metadata = cls.meta.get().find(function(m) return m.name == ':irisUsingProcessed');
+		var alreadyProcessed_metadata = cls.meta.get().find(function(m) return m.name == ':gscriptUsingProcessed');
 		if (alreadyProcessed_metadata != null)
 			return fields;
 
-		var entryField = cls.meta.get().find(function(m) return m.name == ':irisUsableEntry');
+		var entryField = cls.meta.get().find(function(m) return m.name == ':gscriptUsableEntry');
 		var hasParams = entryField != null && entryField.params != null;
 		var forceAny = false;
 		var onlyBasic = false;
@@ -53,8 +53,8 @@ class UsingMacro {
 			// functions marked with @:noUsing won't be able to be used by variables
 			if (field.meta.find(function(m) return m.name == ':noUsing') != null)
 				continue;
-			// if you want it to be usable in source, but not in the script, use @:irisNoUse
-			if (field.meta.find(function(m) return m.name == ':irisNoUse') != null)
+			// if you want it to be usable in source, but not in the script, use @:gscriptNoUse
+			if (field.meta.find(function(m) return m.name == ':gscriptNoUse') != null)
 				continue;
 
 			// if (field.isPublic == false)
@@ -116,7 +116,7 @@ class UsingMacro {
 		}
 
 		fields.push({
-			name: '__irisUsing_' + packName.replace(".", "_"),
+			name: '__gscriptUsing_' + packName.replace(".", "_"),
 			access: [APrivate, AStatic],
 			kind: FVar(macro : Map<String, Type.ValueType>, {
 				var arr: Array<Expr> = [];
@@ -133,7 +133,7 @@ class UsingMacro {
 		// var printer = new haxe.macro.Printer();
 		// trace(printer.printField(fields[fields.length - 1]));
 
-		cls.meta.add(':irisUsingProcessed', [], cls.pos);
+		cls.meta.add(':gscriptUsingProcessed', [], cls.pos);
 
 		return fields;
 	}

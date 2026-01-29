@@ -1,17 +1,17 @@
-package crowplexus.iris;
+package brainy.gscript;
 
 abstract OneOfTwo<T1, T2>(Dynamic) from T1 from T2 to T1 to T2 {}
 
-typedef RawIrisConfig = {
+typedef RawGScriptConfig = {
 	var name: String;
 	var ?autoRun: Bool;
 	var ?autoPreset: Bool;
 	var ?localBlocklist: Array<String>;
 };
 
-typedef AutoIrisConfig = OneOfTwo<IrisConfig, RawIrisConfig>;
+typedef AutoGScriptConfig = OneOfTwo<GScriptConfig, RawGScriptConfig>;
 
-class IrisConfig {
+class GScriptConfig {
 	public var name: String = null;
 	public var autoRun: Bool = true;
 	public var autoPreset: Bool = true;
@@ -20,7 +20,7 @@ class IrisConfig {
 	@:unreflective public var localBlocklist: Array<String> = [];
 
 	/**
-	 * Initialises the Iris script config.
+	 * Initialises the GScript script config.
 	 *
 	 * @param name			The obvious!
 	 * @param autoRun					Makes the script run automatically upon being created.
@@ -35,10 +35,10 @@ class IrisConfig {
 			this.localBlocklist = localBlocklist;
 	}
 
-	public static function from(d: AutoIrisConfig): IrisConfig {
-		if (d != null && Std.isOfType(d, IrisConfig))
+	public static function from(d: AutoGScriptConfig): GScriptConfig {
+		if (d != null && Std.isOfType(d, GScriptConfig))
 			return d;
-		var d: RawIrisConfig = cast d;
-		return new IrisConfig(d.name, d.autoRun, d.autoPreset, d.localBlocklist);
+		var d: RawGScriptConfig = cast d;
+		return new GScriptConfig(d.name, d.autoRun, d.autoPreset, d.localBlocklist);
 	}
 }

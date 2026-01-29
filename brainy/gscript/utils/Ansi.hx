@@ -1,4 +1,4 @@
-package crowplexus.iris.utils;
+package brainy.gscript.utils;
 
 #if (haxe_ver < 4.3) @:enum #else enum #end
 
@@ -78,7 +78,7 @@ abstract AnsiTextAttribute(Int) {
 	final STRIKTHROUGH_OFF = 29;
 }
 
-class Ansi implements crowplexus.iris.IrisUsingClass {
+class Ansi implements brainy.gscript.GScriptUsingClass {
 	/**
 	 * ANSI escape sequence header
 	 */

@@ -20,14 +20,14 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package crowplexus.hscript;
+package brainy.hscript;
 
 import Type.ValueType;
-import crowplexus.hscript.Expr;
-import crowplexus.hscript.Tools;
-import crowplexus.iris.Iris;
-import crowplexus.iris.IrisUsingClass;
-import crowplexus.iris.utils.UsingEntry;
+import brainy.hscript.Expr;
+import brainy.hscript.Tools;
+import brainy.gscript.GScript;
+import brainy.gscript.GScriptUsingClass;
+import brainy.gscript.utils.UsingEntry;
 import haxe.Constraints.IMap;
 import haxe.PosInfos;
 
@@ -370,7 +370,7 @@ class Interp {
 
 	inline function warn(e: #if hscriptPos ErrorDef #else Error #end): Dynamic {
 		#if hscriptPos var e = new Error(e, curExpr.pmin, curExpr.pmax, curExpr.origin, curExpr.line); #end
-		Iris.warn(Printer.errorToString(e, showPosOnLog), #if hscriptPos posInfos() #else null #end);
+		GScript.warn(Printer.errorToString(e, showPosOnLog), #if hscriptPos posInfos() #else null #end);
 		return null;
 	}
 
@@ -404,8 +404,8 @@ class Interp {
 	}
 
 	public function getOrImportClass(name: String): Dynamic {
-		if (Iris.proxyImports.exists(name))
-			return Iris.proxyImports.get(name);
+		if (GScript.proxyImports.exists(name))
+			return GScript.proxyImports.get(name);
 		return Tools.getClass(name);
 	}
 
@@ -507,7 +507,7 @@ class Interp {
 				throw SReturn;
 			case EImport(v, as):
 				final aliasStr = (as != null ? " named " + as : ""); // for errors
-				if (Iris.blocklistImports.contains(v)) {
+				if (GScript.blocklistImports.contains(v)) {
 					error(ECustom("You cannot add a blacklisted import, for class " + v + aliasStr));
 					return null;
 				}
@@ -884,7 +884,7 @@ class Interp {
 	}
 
 	function useUsing(name: String): Void {
-		for (us in Iris.registeredUsingEntries) {
+		for (us in GScript.registeredUsingEntries) {
 			if (us.name == name) {
 				if (usings.indexOf(us) == -1)
 					usings.push(us);
@@ -894,7 +894,7 @@ class Interp {
 
 		var cls = Tools.getClass(name);
 		if (cls != null) {
-			var fieldName = '__irisUsing_' + StringTools.replace(name, ".", "_");
+			var fieldName = '__gscriptUsing_' + StringTools.replace(name, ".", "_");
 			if (Reflect.hasField(cls, fieldName)) {
 				var fields = Reflect.field(cls, fieldName);
 				if (fields == null)
@@ -924,11 +924,11 @@ class Interp {
 					return canCall ? Reflect.callMethod(cls, Reflect.field(cls, f), [o].concat(args)) : null;
 				});
 
-				#if IRIS_DEBUG
+				#if gscript_DEBUG
 				trace("Registered macro based using entry for " + name);
 				#end
 
-				Iris.registeredUsingEntries.push(entry);
+				GScript.registeredUsingEntries.push(entry);
 				usings.push(entry);
 				return;
 			}
@@ -951,11 +951,11 @@ class Interp {
 				return Reflect.callMethod(cls, field, [o].concat(args));
 			});
 
-			#if IRIS_DEBUG
+			#if gscript_DEBUG
 			trace("Registered reflection based using entry for " + name);
 			#end
 
-			Iris.registeredUsingEntries.push(entry);
+			GScript.registeredUsingEntries.push(entry);
 			usings.push(entry);
 			return;
 		}

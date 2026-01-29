@@ -21,7 +21,7 @@ typedef Person = {
 
 typedef Animal = Entity & {species: String};
 typedef Callback = Animal->Void & {name: String};
-final test = "Iris";
+final test = "GScript";
 
 trace("Top level " + test);
 function main() {
@@ -53,8 +53,8 @@ function main() {
 	trace(obj.name);
 
 	switch (test) {
-		case "Iris":
-			trace("Matching Iris");
+		case "GScript":
+			trace("Matching GScript");
 		default:
 			trace("Not Matching");
 	}

@@ -20,12 +20,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package crowplexus.hscript;
+package brainy.hscript;
 
-import crowplexus.hscript.Expr.Error;
+import brainy.hscript.Expr.Error;
 import haxe.macro.Expr;
 #if hscriptPos
-import crowplexus.hscript.Expr.ErrorDef;
+import brainy.hscript.Expr.ErrorDef;
 #end
 
 class Macro {
@@ -183,7 +183,7 @@ class Macro {
 		};
 	}
 
-	public function convert(e: crowplexus.hscript.Expr): Expr {
+	public function convert(e: brainy.hscript.Expr): Expr {
 		return {
 			expr: switch (#if hscriptPos e.e #else e #end) {
 				case EConst(c):

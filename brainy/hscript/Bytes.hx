@@ -20,10 +20,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package crowplexus.hscript;
+package brainy.hscript;
 
-import crowplexus.hscript.Expr;
-import crowplexus.hscript.Types.ByteInt;
+import brainy.hscript.Expr;
+import brainy.hscript.Types.ByteInt;
 import haxe.Serializer;
 import haxe.Unserializer;
 

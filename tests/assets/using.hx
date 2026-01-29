@@ -2,7 +2,7 @@ package tests;
 
 import Type;
 
-using crowplexus.iris.utils.Ansi;
+using brainy.gscript.utils.Ansi;
 function main() {
 	// mainStringTools(); // built-in
 	// mainLambda(); // built-in
@@ -59,9 +59,9 @@ function mainAnsi() {
 }
 
 function mainReflection() {
-	import crowplexus.iris.FAKECLASS.ErrorSeverity;
+	import brainy.gscript.FAKECLASS.ErrorSeverity;
 
-	using crowplexus.iris.ErrorSeverity.ErrorSeverityTools;
+	using brainy.gscript.ErrorSeverity.ErrorSeverityTools;
 
 	trace(ErrorSeverity.WARN.getPrefix(), ErrorSeverity.WARN.getColor());
 	try {

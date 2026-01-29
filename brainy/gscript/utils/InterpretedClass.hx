@@ -1,4 +1,4 @@
-package crowplexus.iris.utils;
+package brainy.gscript.utils;
 
 // someday
 @:structInit

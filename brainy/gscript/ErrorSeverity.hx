@@ -1,6 +1,6 @@
-package crowplexus.iris;
+package brainy.gscript;
 
-import crowplexus.iris.utils.Ansi;
+import brainy.gscript.utils.Ansi;
 
 /**
  * Declares the severity of an error,
@@ -13,7 +13,7 @@ enum ErrorSeverity {
 	FATAL;
 }
 
-class ErrorSeverityTools implements crowplexus.iris.IrisUsingClass {
+class ErrorSeverityTools implements brainy.gscript.GScriptUsingClass {
 	public static function getPrefix(severity: ErrorSeverity): String {
 		return switch (severity) {
 			case NONE: "";

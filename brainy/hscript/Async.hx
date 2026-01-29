@@ -20,9 +20,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package crowplexus.hscript;
+package brainy.hscript;
 
-import crowplexus.hscript.Expr;
+import brainy.hscript.Expr;
 
 enum VarMode {
 	Defined;

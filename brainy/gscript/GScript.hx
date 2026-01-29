@@ -1,17 +1,17 @@
-package crowplexus.iris;
+package brainy.gscript;
 
-import crowplexus.iris.utils.Ansi;
-import crowplexus.hscript.proxy.ProxyType;
+import brainy.gscript.utils.Ansi;
+import brainy.hscript.proxy.ProxyType;
 import haxe.ds.StringMap;
-import crowplexus.hscript.*;
-import crowplexus.iris.ErrorSeverity;
-import crowplexus.iris.IrisConfig;
-import crowplexus.iris.utils.UsingEntry;
+import brainy.hscript.*;
+import brainy.gscript.ErrorSeverity;
+import brainy.gscript.GScriptConfig;
+import brainy.gscript.utils.UsingEntry;
 
-using crowplexus.iris.utils.Ansi;
+using brainy.gscript.utils.Ansi;
 
 @:structInit
-class IrisCall {
+class GScriptCall {
 	/**
 	 * an HScript Function Name.
 	**/
@@ -34,11 +34,11 @@ class IrisCall {
  *
  * It is highly recommended that you override this class to add custom defualt variables and such.
 **/
-class Iris {
+class GScript {
 	/**
 	 * Map with stored instances of scripts.
 	**/
-	public static var instances: StringMap<Iris> = new StringMap<Iris>();
+	public static var instances: StringMap<GScript> = new StringMap<GScript>();
 
 	public static var registeredUsingEntries: Array<UsingEntry> = [
 		new UsingEntry("StringTools", function(o: Dynamic, f: String, args: Array<Dynamic>): Dynamic {
@@ -96,7 +96,7 @@ class Iris {
 		return proxyImports.get(name);
 	}
 
-	private static function getDefaultPos(name: String = "Iris"): haxe.PosInfos {
+	private static function getDefaultPos(name: String = "GScript"): haxe.PosInfos {
 		return {
 			fileName: name,
 			lineNumber: -1,
@@ -174,9 +174,9 @@ class Iris {
 	}
 
 	/**
-	 * Config file, set when creating a new `Iris` instance.
+	 * Config file, set when creating a new `GScript` instance.
 	**/
-	public var config: IrisConfig = null;
+	public var config: GScriptConfig = null;
 
 	/**
 	 * Current script name, from `config.name`.
@@ -223,11 +223,11 @@ class Iris {
 	 * will trace "Hello World!" to the standard output.
 	 * @param scriptCode      the script to be parsed, e.g:
 	 */
-	public function new(scriptCode: String, ?config: AutoIrisConfig): Void {
+	public function new(scriptCode: String, ?config: AutoGScriptConfig): Void {
 		if (config == null)
-			config = new IrisConfig("Iris", true, true, []);
+			config = new GScriptConfig("GScript", true, true, []);
 		this.scriptCode = scriptCode;
-		this.config = IrisConfig.from(config);
+		this.config = GScriptConfig.from(config);
 		this.config.name = fixScriptName(this.name);
 
 		parser = new Parser();
@@ -250,7 +250,7 @@ class Iris {
 		// makes sure that we never have instances with identical names.
 		var _name = toFix;
 		var copyID: Int = 1;
-		while (Iris.instances.exists(_name)) {
+		while (GScript.instances.exists(_name)) {
 			_name = toFix + "_" + copyID;
 			copyID += 1;
 		}
@@ -268,7 +268,7 @@ class Iris {
 		if (expr == null)
 			expr = parse();
 
-		Iris.instances.set(this.name, this);
+		GScript.instances.set(this.name, this);
 		this.config.packageName = parser.packageName;
 		return interp.execute(expr);
 	}
@@ -295,13 +295,13 @@ class Iris {
 		#if hscriptPos
 		// overriding trace for good measure.
 		// if you're a game developer or a fnf modder (hi guys),
-		// you might wanna use Iris.print for your on-screen consoles and such.
+		// you might wanna use GScript.print for your on-screen consoles and such.
 		set("trace", Reflect.makeVarArgs(function(x: Array<Dynamic>) {
-			var pos = this.interp != null ? this.interp.posInfos() : Iris.getDefaultPos(this.name);
+			var pos = this.interp != null ? this.interp.posInfos() : GScript.getDefaultPos(this.name);
 			var v = x.shift();
 			if (x.length > 0)
 				pos.customParams = x;
-			Iris.print(v, pos);
+			GScript.print(v, pos);
 		}));
 		#end
 	}
@@ -311,9 +311,9 @@ class Iris {
 	 * @param field 	The field that needs to be looked for.
 	 */
 	public function get(field: String): Dynamic {
-		#if IRIS_DEBUG
+		#if gscript_DEBUG
 		if (interp == null)
-			Iris.fatal("[Iris:get()]: " + interpErrStr + ", when trying to get variable \"" + field + "\", returning false...");
+			GScript.fatal("[GScript:get()]: " + interpErrStr + ", when trying to get variable \"" + field + "\", returning false...");
 		#end
 		return interp != null ? interp.variables.get(field) : false;
 	}
@@ -326,8 +326,8 @@ class Iris {
 	 */
 	public function set(name: String, value: Dynamic, allowOverride: Bool = true): Void {
 		if (interp == null || interp.variables == null) {
-			#if IRIS_DEBUG
-			Iris.fatal("[Iris:set()]: " + interpErrStr + ", when trying to set variable \"" + name + "\" so variables cannot be set.");
+			#if gscript_DEBUG
+			GScript.fatal("[GScript:set()]: " + interpErrStr + ", when trying to set variable \"" + name + "\" so variables cannot be set.");
 			#end
 			return;
 		}
@@ -341,10 +341,10 @@ class Iris {
 	 * @param fun       The name of the method you wanna call.
 	 * @param args      The arguments that the method needs.
 	 */
-	public function call(fun: String, ?args: Array<Dynamic>): IrisCall {
+	public function call(fun: String, ?args: Array<Dynamic>): GScriptCall {
 		if (interp == null) {
-			#if IRIS_DEBUG
-			trace("[Iris:call()]: " + interpErrStr + ", so functions cannot be called.");
+			#if gscript_DEBUG
+			trace("[GScript:call()]: " + interpErrStr + ", so functions cannot be called.");
 			#end
 			return null;
 		}
@@ -367,12 +367,12 @@ class Iris {
 		// @formatter:off
 		#if hscriptPos
 		catch (e:Expr.Error) {
-			Iris.error(Printer.errorToString(e, false), this.interp.posInfos());
+			GScript.error(Printer.errorToString(e, false), this.interp.posInfos());
 		}
 		#end
 		catch (e:haxe.Exception) {
-			var pos = isFunction ? this.interp.posInfos() : Iris.getDefaultPos(this.name);
-			Iris.error(Std.string(e), pos);
+			var pos = isFunction ? this.interp.posInfos() : GScript.getDefaultPos(this.name);
+			GScript.error(Std.string(e), pos);
 		}
 		// @formatter:on
 		return null;
@@ -383,46 +383,46 @@ class Iris {
 	 * @param field 		The field to check if exists.
 	 */
 	public function exists(field: String): Bool {
-		#if IRIS_DEBUG
+		#if gscript_DEBUG
 		if (interp == null)
-			trace("[Iris:exists()]: " + interpErrStr + ", returning false...");
+			trace("[GScript:exists()]: " + interpErrStr + ", returning false...");
 		#end
 		return (interp != null) ? interp.variables.exists(field) : false;
 	}
 
 	/**
 	 * Destroys the current instance of this script
-	 * along with its parser, and also removes it from the `Iris.instances` map.
+	 * along with its parser, and also removes it from the `GScript.instances` map.
 	 *
 	 * **WARNING**: this action CANNOT be undone.
 	**/
 	public function destroy(): Void {
-		if (Iris.instances.exists(this.name))
-			Iris.instances.remove(this.name);
+		if (GScript.instances.exists(this.name))
+			GScript.instances.remove(this.name);
 		interp = null;
 		parser = null;
 	}
 
 	/**
-	 * Destroys every single script found within the `Iris.instances` map.
+	 * Destroys every single script found within the `GScript.instances` map.
 	 *
 	 * **WARNING**: this action CANNOT be undone.
 	**/
 	public static function destroyAll(): Void {
-		for (key in Iris.instances.keys()) {
-			var iris = Iris.instances.get(key);
-			if (iris.interp == null)
+		for (key in GScript.instances.keys()) {
+			var gscript = GScript.instances.get(key);
+			if (gscript.interp == null)
 				continue;
-			iris.destroy();
+			gscript.destroy();
 		}
 
-		Iris.instances.clear();
-		Iris.instances = new StringMap<Iris>();
+		GScript.instances.clear();
+		GScript.instances = new StringMap<GScript>();
 	}
 
 	public static function registerUsingGlobal(name: String, call: UsingCall): UsingEntry {
 		var entry = new UsingEntry(name, call);
-		Iris.registeredUsingEntries.push(entry);
+		GScript.registeredUsingEntries.push(entry);
 		return entry;
 	}
 }

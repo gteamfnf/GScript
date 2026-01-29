@@ -1,6 +1,6 @@
-package crowplexus.hscript.proxy;
+package brainy.hscript.proxy;
 
-import crowplexus.hscript.Tools.EnumValue as HEnumValue;
+import brainy.hscript.Tools.EnumValue as HEnumValue;
 
 // TODO: for most of these, support hscript enums
 // which don't quite work, but here we are

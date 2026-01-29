@@ -1,4 +1,4 @@
-# HScript Iris
+# HScript GScript
 
 ---
 
@@ -14,7 +14,7 @@ a [HScript](https://github.com/HaxeFoundation/hscript) extension made to make th
 
 # USAGE
 
-Initializing a Iris Script should be fairly easy and very much self-explanatory
+Initializing a GScript Script should be fairly easy and very much self-explanatory
 
 ```haxe
 // *
@@ -23,7 +23,7 @@ Initializing a Iris Script should be fairly easy and very much self-explanatory
 
 // import somepackage.SomeModule;
 
-final greeting:String = "Hello from Iris!";
+final greeting:String = "Hello from GScript!";
 
 function sayHello() {
 	trace(greeting);
@@ -45,20 +45,20 @@ function countUpTo(number:Int) {
 // * src/Main.hx
 // *
 
-import crowplexus.iris.Iris;
-import crowplexus.iris.IrisConfig;
+import brainy.gscript.GScript;
+import brainy.gscript.GScriptConfig;
 
 class Main {
 	static function main():Void {
 		// reminder that the rules are completely optional.
-		final rules:RawIrisConfig = {name: "My Script", autoRun: false, autoPreset: true};
+		final rules:RawGScriptConfig = {name: "My Script", autoRun: false, autoPreset: true};
 		final getText:String->String = #if sys sys.io.File.getContent #elseif openfl openfl.utils.Assets.getText #end;
-		var myScript:Iris = new Iris(getText("assets/scripts/hi.hx"), rules);
+		var myScript:GScript = new GScript(getText("assets/scripts/hi.hx"), rules);
 
 		// this is necessary in case the `autoRun` rule is disabled when initializing the script, if not it will initialize by itself.
 		myScript.execute();
 
-		myScript.call("sayHello"); // prints "Hello from Iris!"
+		myScript.call("sayHello"); // prints "Hello from GScript!"
 		myScript.call("countUpTo", [5]); // prints "1, 2, 3, 4, 5"
 	}
 }

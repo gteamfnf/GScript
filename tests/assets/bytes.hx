@@ -18,5 +18,5 @@ enum Test {
 	D(a: Int);
 }
 
-final test = "Iris";
+final test = "GScript";
 trace("Top level " + test);

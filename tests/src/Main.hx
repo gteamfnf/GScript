@@ -3,15 +3,15 @@ package;
 import sys.io.File;
 import haxe.io.Path;
 import sys.FileSystem;
-import crowplexus.iris.Iris;
-import crowplexus.hscript.Parser;
-import crowplexus.hscript.Printer;
-import crowplexus.hscript.Bytes;
+import brainy.gscript.GScript;
+import brainy.hscript.Parser;
+import brainy.hscript.Printer;
+import brainy.hscript.Bytes;
 import haxe.Resource;
 
 using StringTools;
 
-@:access(crowplexus.iris.Iris)
+@:access(brainy.gscript.GScript)
 class Main {
 	static function main() {
 		// mainTest();
@@ -26,10 +26,10 @@ class Main {
 	static function mainTest() {
 		trace("Hello World!");
 
-		var myScript: Iris = new Iris(Resource.getString("assets/test.hx"));
+		var myScript: GScript = new GScript(Resource.getString("assets/test.hx"));
 		myScript.execute();
 
-		var result = myScript.call("main"); // prints "Hello from Iris!"
+		var result = myScript.call("main"); // prints "Hello from GScript!"
 		trace(result);
 
 		var printer = new Printer();
@@ -60,7 +60,7 @@ class Main {
 	 * Test byte encoding.
 	**/
 	static function mainBytes() {
-		var myScript: Iris = new Iris(Resource.getString("assets/bytes.hx"), {
+		var myScript: GScript = new GScript(Resource.getString("assets/bytes.hx"), {
 			autoRun: false,
 			autoPreset: false,
 			name: "bytes"
@@ -81,11 +81,11 @@ class Main {
 	 * number appended to their name according to its copy id.
 	**/
 	static function testIndenticalNames() {
-		var script = new Iris('trace("Hello World!");', {name: "script"}).execute();
-		var script2 = new Iris('trace("A!");', {name: "script"}).execute();
-		var script3 = new Iris('trace("B!");', {name: "script"}).execute();
-		var script4 = new Iris('trace("C!");', {name: "script"}).execute();
-		trace(Iris.instances);
+		var script = new GScript('trace("Hello World!");', {name: "script"}).execute();
+		var script2 = new GScript('trace("A!");', {name: "script"}).execute();
+		var script3 = new GScript('trace("B!");', {name: "script"}).execute();
+		var script4 = new GScript('trace("C!");', {name: "script"}).execute();
+		trace(GScript.instances);
 	}
 
 	public static function fullTestParseEntireSourceCode() {
@@ -118,7 +118,7 @@ class Main {
 	 * Test for HScript Using keyword
 	 */
 	static function testUsing() {
-		var myScript: Iris = new Iris(Resource.getString("assets/using.hx"), {
+		var myScript: GScript = new GScript(Resource.getString("assets/using.hx"), {
 			name: "using",
 			autoRun: false
 		});

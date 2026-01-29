@@ -1,4 +1,4 @@
-package crowplexus.iris.utils;
+package brainy.gscript.utils;
 
 @:dox(hide)
 typedef UsingCall = (o: Dynamic, f: String, args: Array<Dynamic>) -> Dynamic;

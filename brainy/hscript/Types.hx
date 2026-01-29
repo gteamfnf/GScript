@@ -1,4 +1,4 @@
-package crowplexus.hscript;
+package brainy.hscript;
 
 typedef ByteInt = #if cpp cpp.Int8 #elseif cs cs.Int8 #elseif java java.Int8 #else Int #end;
 typedef ShortInt = #if cpp cpp.Int16 #elseif cs cs.Int16 #elseif java java.Int16 #else Int #end;

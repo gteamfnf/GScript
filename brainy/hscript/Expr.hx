@@ -20,9 +20,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package crowplexus.hscript;
+package brainy.hscript;
 
-import crowplexus.hscript.Types.ByteUInt;
+import brainy.hscript.Types.ByteUInt;
 
 enum Const {
 	CInt(v: Int);

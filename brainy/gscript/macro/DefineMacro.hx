@@ -1,4 +1,4 @@
-package crowplexus.iris.macro;
+package brainy.gscript.macro;
 
 #if macro
 import haxe.macro.Context;
