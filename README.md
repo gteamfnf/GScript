@@ -1,8 +1,8 @@
-# HScript GScript
+# GScript
 
 ---
 
-a [HScript](https://github.com/HaxeFoundation/hscript) extension made to make the process of creating a script way easier.
+Fork of HScript Iris for G-Engine!
 
 ---
 
