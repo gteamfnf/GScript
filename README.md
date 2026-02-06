@@ -2,7 +2,7 @@
 
 ---
 
-Fork of HScript Iris for G-Engine!
+Fork of HScript Iris for G-Engine! Feel free to use this fork of HScript for your own engine!
 
 ---
 
